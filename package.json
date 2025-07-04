@@ -1,0 +1,24 @@
+{
+  "name": "smtp-server",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "help": "node app.js --help",
+    "start": "node app.js",
+    "start:s3": "node app.js --upload-to-s3",
+    "start:local": "sudo env PATH=$PATH node app.js",
+    "start:local:s3": "sudo env PATH=$PATH node app.js --upload-to-s3"
+  },
+  "author": "Vineet Ranjan",
+  "license": "ISC",
+  "description": "Simple SMTP Server",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.654.0",
+    "smtp-server": "^3.13.5"
+  },
+  "scripts-info": {
+    "start": "Start SMTP server",
+    "start:s3": "Start SMTP server with S3 upload capability. Usage: npm run start:s3",
+    "help": "Display help information"
+  }
+}
