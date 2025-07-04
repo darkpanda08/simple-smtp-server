@@ -1,5 +1,7 @@
 # Simple SMTP Server
 
+[![Docker Image](https://github.com/darkpanda08/simple-smtp-server/actions/workflows/publish-ghcr.yaml/badge.svg)](https://github.com/users/darkpanda08/packages/container/package/simple-smtp-server)
+
 A lightweight SMTP server that captures emails and saves them locally or uploads to AWS S3 bucket.
 
 ## Installation
@@ -106,6 +108,37 @@ Create an IAM user/role with the following policy:
 
 ## Docker
 
+### Option 1: Using Pre-built Image
+
+```bash
+# Pull image from GitHub Container Registry
+docker pull ghcr.io/darkpanda08/simple-smtp-server:latest
+
+# Run with local storage
+docker run -d \
+  --name smtp-server \
+  --cap-add=NET_BIND_SERVICE \
+  -p 25:25 \
+  --memory="512m" \
+  -v $(pwd)/emails:/usr/src/app/emails \
+  ghcr.io/darkpanda08/simple-smtp-server:latest
+
+# Run with S3 Upload
+docker run -d \
+  --name smtp-server \
+  --cap-add=NET_BIND_SERVICE \
+  -p 25:25 \
+  --memory="512m" \
+  -v $(pwd)/emails:/usr/src/app/emails \
+  -e AWS_REGION=your-region \
+  -e S3_BUCKET=your-bucket \
+  -e AWS_ACCESS_KEY_ID=your-key \
+  -e AWS_SECRET_ACCESS_KEY=your-secret \
+  ghcr.io/darkpanda08/simple-smtp-server:latest start:s3
+```
+
+### Option 2: Building Locally
+
 ```bash
 # Build image
 docker build -t smtp-server .
@@ -116,6 +149,7 @@ mkdir -p emails
 # Run with local storage
 docker run -d \
   --name smtp-server \
+  --cap-add=NET_BIND_SERVICE \
   -p 25:25 \
   --memory="512m" \
   -v $(pwd)/emails:/usr/src/app/emails \
@@ -133,7 +167,11 @@ docker run -d \
   -e AWS_ACCESS_KEY_ID=your-key \
   -e AWS_SECRET_ACCESS_KEY=your-secret \
   smtp-server start:s3
+```
 
+### Common Docker Commands
+
+```
 # Stop container
 docker stop smtp-server
 
